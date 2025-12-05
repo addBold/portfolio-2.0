@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Максим | Веб-разработчик и создатель ботов</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ===== БАЗОВЫЕ СТИЛИ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0f172a;
+            --bg-light: #1e293b;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #cbd5e1;
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+            --success: #10b981;
+            --error: #ef4444;
+            --radius: 12px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ===== НАВИГАЦИЯ (ИСПРАВЛЕНА) ===== */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-badge {
+            background: var(--accent);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text-primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Мобильное меню */
+        .mobile-menu {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: var(--bg-light);
+            padding: 20px;
+            z-index: 999;
+            display: none;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .mobile-menu.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .mobile-nav-link {
+            padding: 12px 16px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ===== КНОПКИ ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* ===== ГЛАВНАЯ СЕКЦИЯ ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 20px 80px;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-light) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--accent);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* ===== СЕКЦИИ ===== */
+        section {
+            padding: 100px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== КАРТОЧКИ ===== */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 30px;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow);
+        }
+
+        .services-grid,
+        .bots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .service-icon i {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .price {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--accent);
+            margin: 20px 0;
+        }
+
+        .features {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .features li {
+            margin: 10px 0;
+            padding-left: 20px;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .features li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* ===== БОТЫ ===== */
+        .bot-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        /* ===== ПРОЦЕСС ===== */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: white;
+            margin: 0 auto 20px;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover .step-number {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        /* ===== КОНТАКТЫ ===== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-icon i {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        /* ===== ФОРМА ===== */
+        .contact-form {
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        textarea.form-input {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Выбор услуги */
+        .service-selector {
+            margin-bottom: 20px;
+        }
+
+        .service-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .service-option {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .service-option:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--accent);
+        }
+
+        .service-option.selected {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .service-option i {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* ===== ТГ БОТ В ФОРМЕ ===== */
+        .tg-bot-widget {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: var(--radius);
+        }
+
+        .bot-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .bot-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .bot-messages {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius);
+        }
+
+        .bot-message {
+            margin: 10px 0;
+            padding: 10px 15px;
+            background: rgba(59, 130, 246, 0.2);
+            border-radius: var(--radius);
+        }
+
+        .bot-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .bot-input input {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+        }
+
+        .bot-input input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* ===== ФУТЕР ===== */
+        footer {
+            padding: 60px 20px 30px;
+            background: var(--bg-light);
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ===== АДАПТИВНОСТЬ ===== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .services-grid,
+            .bots-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-form {
+                padding: 20px;
+            }
+            
+            .service-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .hero {
+                padding: 100px 20px 60px;
+            }
+            
+            section {
+                padding: 60px 20px;
+            }
+            
+            .service-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== АНИМАЦИИ ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== УВЕДОМЛЕНИЯ ===== */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 25px;
+            background: var(--accent);
+            color: white;
+            border-radius: var(--radius);
+            z-index: 2000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+            box-shadow: var(--shadow);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--success);
+        }
+
+        .notification.error {
+            background: var(--error);
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                MAXIM.DEV
+                <span class="logo-badge">AI</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">Главная</a>
+                <a href="#about" class="nav-link">Обо мне</a>
+                <a href="#services" class="nav-link">Сайты</a>
+                <a href="#bots" class="nav-link">Боты</a>
+                <a href="#process" class="nav-link">Процесс</a>
+                <a href="#contact" class="btn btn-primary btn-sm">
+                    <i class="fas fa-paper-plane"></i> Начать
+                </a>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Мобильное меню -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-nav-links">
+                <a href="#home" class="mobile-nav-link">Главная</a>
+                <a href="#about" class="mobile-nav-link">Обо мне</a>
+                <a href="#services" class="mobile-nav-link">Сайты</a>
+                <a href="#bots" class="mobile-nav-link">Боты</a>
+                <a href="#process" class="mobile-nav-link">Процесс</a>
+                <a href="#contact" class="mobile-nav-link" style="text-align: center; background: var(--accent);">
+                    <i class="fas fa-paper-plane"></i> Начать проект
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Главная -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-badge">
+                    <i class="fas fa-code"></i> WEB × AI × AUTOMATION
+                </span>
+                <h1>Современная веб-разработка и AI боты</h1>
+                <p class="hero-description">
+                    Создаю продающие сайты и умных ботов. Превращаю бизнес-идеи в цифровые продукты, которые работают 24/7 и приносят результат.
+                </p>
+                
+                <div class="hero-actions">
+                    <a href="#contact" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Обсудить проект
+                    </a>
+                    <a href="#services" class="btn btn-secondary">
+                        <i class="fas fa-eye"></i> Посмотреть услуги
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Обо мне -->
+    <section id="about">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Обо мне</h2>
+                <p class="section-subtitle">Веб-разработчик, который понимает бизнес и создает решения</p>
+            </div>
+            
+            <div class="card fade-in">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                    <div>
+                        <h3 style="margin-bottom: 15px;">Максим Болд</h3>
+                        <p style="margin-bottom: 20px;">Специализируюсь на создании современных веб-решений и автоматизации бизнес-процессов. Работаю с технологиями: HTML5, CSS3, JavaScript, Node.js, AI/ML.</p>
+                        
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <span style="padding: 8px 16px; background: rgba(59, 130, 246, 0.1); border-radius: var(--radius); color: var(--accent); font-size: 0.9rem;">HTML5/CSS3</span>
+                            <span style="padding: 8px 16px; background: rgba(59, 130, 246, 0.1); border-radius: var(--radius); color: var(--accent); font-size: 0.9rem;">JavaScript</span>
+                            <span style="padding: 8px 16px; background: rgba(59, 130, 246, 0.1); border-radius: var(--radius); color: var(--accent); font-size: 0.9rem;">Node.js</span>
+                            <span style="padding: 8px 16px; background: rgba(59, 130, 246, 0.1); border-radius: var(--radius); color: var(--accent); font-size: 0.9rem;">AI/ML</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div style="padding: 20px; background: rgba(59, 130, 246, 0.05); border-radius: var(--radius); border-left: 4px solid var(--accent);">
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2rem; font-weight: 900; color: var(--accent);">100+</div>
+                                    <div style="font-size: 0.9rem;">Проектов</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2rem; font-weight: 900; color: var(--accent);">24/7</div>
+                                    <div style="font-size: 0.9rem;">Поддержка</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2rem; font-weight: 900; color: var(--accent);">0</div>
+                                    <div style="font-size: 0.9rem;">Просрочек</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2rem; font-weight: 900; color: var(--accent);">99%</div>
+                                    <div style="font-size: 0.9rem;">Довольных</div>
+                                </div>
+                            </div>
+                            <p style="font-style: italic;">
+                                "Создаю не просто код, а решения, которые приносят реальную ценность бизнесу"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Сайты -->
+    <section id="services">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Разработка сайтов</h2>
+                <p class="section-subtitle">Современные решения для вашего бизнеса</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Продающий лендинг</h3>
+                    <p>Одностраничный сайт с максимальной конверсией. Современный дизайн и анимации.</p>
+                    
+                    <ul class="features">
+                        <li>Glass-дизайн</li>
+                        <li>Плавные анимации</li>
+                        <li>Адаптивная верстка</li>
+                        <li>SEO-оптимизация</li>
+                        <li>Интеграция с CRM</li>
+                    </ul>
+                    
+                    <div class="price">от 3 000 ₽</div>
+                    <button class="btn btn-secondary btn-sm service-select" data-service="landing">
+                        Выбрать эту услугу
+                    </button>
+                </div>
+                
+                <div class="card fade-in" style="animation-delay: 0.2s;">
+                    <div class="service-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3>Интернет-магазин</h3>
+                    <p>Полноценная e-commerce платформа с системой управления и аналитикой.</p>
+                    
+                    <ul class="features">
+                        <li>Каталог и корзина</li>
+                        <li>Онлайн-оплаты</li>
+                        <li>Админ-панель</li>
+                        <li>AI-рекомендации</li>
+                        <li>Чат-бот в подарок</li>
+                    </ul>
+                    
+                    <div class="price">от 15 000 ₽</div>
+                    <button class="btn btn-secondary btn-sm service-select" data-service="ecommerce">
+                        Выбрать эту услугу
+                    </button>
+                </div>
+                
+                <div class="card fade-in" style="animation-delay: 0.4s;">
+                    <div class="service-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>Корпоративный сайт</h3>
+                    <p>Представительство компании в интернете с системой управления контентом.</p>
+                    
+                    <ul class="features">
+                        <li>Многостраничность</li>
+                        <li>Блог и новости</li>
+                        <li>Формы обратной связи</li>
+                        <li>API-интеграции</li>
+                        <li>Аналитика</li>
+                    </ul>
+                    
+                    <div class="price">от 10 000 ₽</div>
+                    <button class="btn btn-secondary btn-sm service-select" data-service="corporate">
+                        Выбрать эту услугу
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Боты -->
+    <section id="bots">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>AI Боты</h2>
+                <p class="section-subtitle">Умные решения для автоматизации</p>
+            </div>
+            
+            <div class="bots-grid">
+                <div class="card fade-in">
+                    <div class="bot-tag">Telegram</div>
+                    <h3>Базовый бот</h3>
+                    <p>Простой и эффективный бот для Telegram с базовой логикой.</p>
+                    
+                    <ul class="features">
+                        <li>Автоответы</li>
+                        <li>База пользователей</li>
+                        <li>Отправка файлов</li>
+                        <li>Базовые команды</li>
+                        <li>Интеграция с сайтом</li>
+                    </ul>
+                    
+                    <div class="price">3 900 ₽</div>
+                    <button class="btn btn-secondary btn-sm service-select" data-service="telegram-bot">
+                        Выбрать эту услугу
+                    </button>
+                </div>
+                
+                <div class="card fade-in" style="animation-delay: 0.2s;">
+                    <div class="bot-tag">Мультимессенджер</div>
+                    <h3>Кросс-платформенный</h3>
+                    <p>Бот для всех популярных мессенджеров одновременно.</p>
+                    
+                    <ul class="features">
+                        <li>Telegram, WhatsApp, Viber</li>
+                        <li>Единая база</li>
+                        <li>CRM-интеграция</li>
+                        <li>Рассылки</li>
+                        <li>Аналитика</li>
+                    </ul>
+                    
+                    <div class="price">4 500 ₽</div>
+                    <button class="btn btn-secondary btn-sm service-select" data-service="messenger-bot">
+                        Выбрать эту услугу
+                    </button>
+                </div>
+                
+                <div class="card fade-in" style="animation-delay: 0.4s;">
+                    <div class="bot-tag">AI Интеллект</div>
+                    <h3>Умный бот</h3>
+                    <p>Бот с NLP и машинным обучением для сложных задач.</p>
+                    
+                    <ul class="features">
+                        <li>Понимание контекста</li>
+                        <li>Обучение на диалогах</li>
+                        <li>Голосовые команды</li>
+                        <li>API интеграции</li>
+                        <li>Кастомизация</li>
+                    </ul>
+                    
+                    <div class="price">5 000 ₽</div>
+                    <button class="btn btn-secondary btn-sm service-select" data-service="ai-bot">
+                        Выбрать эту услугу
+                    </button>
+                </div>
+                
+                <div class="card fade-in" style="animation-delay: 0.6s;">
+                    <div class="bot-tag">Бизнес</div>
+                    <h3>Комплексная автоматизация</h3>
+                    <p>Полный цикл автоматизации бизнес-процессов.</p>
+                    
+                    <ul class="features">
+                        <li>Онлайн-бронирование</li>
+                        <li>Платежная система</li>
+                        <li>База знаний</li>
+                        <li>Мультиязычность</li>
+                        <li>Поддержка 24/7</li>
+                    </ul>
+                    
+                    <div class="price">от 7 500 ₽</div>
+                    <button class="btn btn-secondary btn-sm service-select" data-service="business-bot">
+                        Выбрать эту услугу
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Процесс -->
+    <section id="process">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Процесс работы</h2>
+                <p class="section-subtitle">Прозрачный путь от идеи до реализации</p>
+            </div>
+            
+            <div class="process-steps">
+                <div class="card step fade-in">
+                    <div class="step-number">01</div>
+                    <h3>Исследование</h3>
+                    <p>Анализ бизнеса, аудитории и конкурентов. Формирование ТЗ.</p>
+                </div>
+                
+                <div class="card step fade-in" style="animation-delay: 0.2s;">
+                    <div class="step-number">02</div>
+                    <h3>Дизайн</h3>
+                    <p>Создание прототипов и визуальной концепции. Утверждение UI/UX.</p>
+                </div>
+                
+                <div class="card step fade-in" style="animation-delay: 0.4s;">
+                    <div class="step-number">03</div>
+                    <h3>Разработка</h3>
+                    <p>Написание кода, интеграция систем, добавление анимаций.</p>
+                </div>
+                
+                <div class="card step fade-in" style="animation-delay: 0.6s;">
+                    <div class="step-number">04</div>
+                    <h3>Запуск</h3>
+                    <p>Тестирование, обучение, запуск проекта. Техническая поддержка.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Контакты -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Контакты</h2>
+                <p class="section-subtitle">Готов обсудить ваш проект</p>
+                <p class="section-subtitle"><i><b>форма обратной связи на обслуживании!</b></i></p>
+                <p class="section-subtitle"><i><b>Напишите вручную🙏</b></i></p>
+                <p class="section-subtitle"><i><b>Спасибо за понимание❤️, контакты ниже👇</b></i></p>
+            </div>
+            
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item fade-in" onclick="copyToClipboard('89064077999')">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h3>Телефон</h3>
+                            <p style="font-size: 1.25rem; font-weight: 700;">8 (906) 407-79-99</p>
+                            <p style="color: var(--accent); font-size: 0.9rem;">Кликните для копирования</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item fade-in" onclick="copyToClipboard('adbold@list.ru')" style="animation-delay: 0.1s;">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h3>Email</h3>
+                            <p style="font-size: 1.25rem; font-weight: 700;">adbold@list.ru</p>
+                            <p style="color: var(--accent); font-size: 0.9rem;">Кликните для копирования</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item fade-in" onclick="window.open('https://t.me/addbold', '_blank')" style="animation-delay: 0.2s;">
+                        <div class="contact-icon">
+                            <i class="fab fa-telegram"></i>
+                        </div>
+                        <div>
+                            <h3>Telegram</h3>
+                            <p style="font-size: 1.25rem; font-weight: 700;">@addbold</p>
+                            <p style="color: var(--accent); font-size: 0.9rem;">Нажмите для перехода</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item fade-in" style="animation-delay: 0.3s;">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <h3>Время ответа</h3>
+                            <p style="font-size: 1.25rem; font-weight: 700;">15-30 минут</p>
+                            <p style="color: var(--accent); font-size: 0.9rem;">В рабочее время</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form fade-in" style="animation-delay: 0.4s;">
+                    <form id="projectForm">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Ваше имя</label>
+                            <input type="text" id="name" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact" class="form-label">Контакт для связи</label>
+                            <input type="text" id="contact" class="form-input" required placeholder="Email или Telegram">
+                        </div>
+                        
+                        <!-- Выбор услуги -->
+                        <div class="form-group service-selector">
+                            <label class="form-label">Выберите услугу</label>
+                            <div class="service-options" id="serviceOptions">
+                                <div class="service-option" data-value="landing">
+                                    <i class="fas fa-bolt"></i>
+                                    Лендинг
+                                </div>
+                                <div class="service-option" data-value="ecommerce">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Магазин
+                                </div>
+                                <div class="service-option" data-value="corporate">
+                                    <i class="fas fa-building"></i>
+                                    Корпоратив
+                                </div>
+                                <div class="service-option" data-value="bot">
+                                    <i class="fas fa-robot"></i>
+                                    Бот
+                                </div>
+                            </div>
+                            <input type="hidden" id="service" name="service">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message" class="form-label">Опишите проект</label>
+                            <textarea id="message" class="form-input" required></textarea>
+                        </div>
+                        
+                        <!-- Telegram бот -->
+                        <div class="tg-bot-widget">
+                            <div class="bot-header">
+                                <div class="bot-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div>
+                                    <h4 style="margin: 0;">AI Помощник</h4>
+                                    <p style="font-size: 0.9rem;">Задайте вопрос о проекте</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bot-messages" id="botMessages">
+                                <div class="bot-message">
+                                    Привет! Я могу ответить на вопросы о разработке сайтов и ботов.
+                                </div>
+                            </div>
+                            
+                            <div class="bot-input">
+                                <input type="text" id="botInput" placeholder="Напишите вопрос...">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="askBot()">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">
+                            <i class="fas fa-paper-plane"></i> Отправить заявку
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="fade-in">
+                    <h3 style="margin-bottom: 20px;">Максим Болд</h3>
+                    <p>Веб-разработчик и создатель AI ботов. Специализируюсь на современных технологиях и автоматизации.</p>
+                    
+                    <div class="social-links">
+                        <a href="https://t.me/addbold" class="social-link" target="_blank">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-codepen"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="fade-in" style="animation-delay: 0.1s;">
+                    <h3 style="margin-bottom: 20px;">Навигация</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <a href="#home" style="color: var(--text-secondary); text-decoration: none;">Главная</a>
+                        <a href="#services" style="color: var(--text-secondary); text-decoration: none;">Сайты</a>
+                        <a href="#bots" style="color: var(--text-secondary); text-decoration: none;">Боты</a>
+                        <a href="#process" style="color: var(--text-secondary); text-decoration: none;">Процесс</a>
+                        <a href="#contact" style="color: var(--text-secondary); text-decoration: none;">Контакты</a>
+                    </div>
+                </div>
+                
+                <div class="fade-in" style="animation-delay: 0.2s;">
+                    <h3 style="margin-bottom: 20px;">Услуги</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <span style="color: var(--text-secondary);">Веб-разработка</span>
+                        <span style="color: var(--text-secondary);">AI Боты</span>
+                        <span style="color: var(--text-secondary);">Автоматизация</span>
+                        <span style="color: var(--text-secondary);">UI/UX Дизайн</span>
+                        <span style="color: var(--text-secondary);">Консалтинг</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom fade-in" style="animation-delay: 0.3s;">
+                <p>© 2023 Максим Болд. Все права защищены.</p>
+                <p style="margin-top: 10px; font-size: 0.8rem;">
+                    <i class="fas fa-shield-alt" style="color: var(--accent);"></i> Безопасность и конфиденциальность
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Уведомление -->
+    <div class="notification" id="notification"></div>
+    
+    <script>
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Сайт загружен!');
+            
+            // ===== МОБИЛЬНОЕ МЕНЮ =====
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('active');
+                this.innerHTML = mobileMenu.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            // Закрытие меню при клике на ссылку
+            document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+            
+            // ===== ПЛАВНАЯ ПРОКРУТКА =====
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const navHeight = document.querySelector('.main-nav').offsetHeight;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Обновляем активную ссылку
+                        document.querySelectorAll('.nav-link').forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        if (this.classList.contains('nav-link')) {
+                            this.classList.add('active');
+                        }
+                        
+                        // Закрываем мобильное меню
+                        mobileMenu.classList.remove('active');
+                        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                });
+            });
+            
+            // ===== ВЫБОР УСЛУГИ =====
+            const serviceOptions = document.querySelectorAll('.service-option');
+            const serviceInput = document.getElementById('service');
+            
+            serviceOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Снимаем выделение со всех
+                    serviceOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Выделяем выбранную
+                    this.classList.add('selected');
+                    
+                    // Устанавливаем значение
+                    serviceInput.value = this.getAttribute('data-value');
+                    
+                    showNotification('Услуга выбрана: ' + this.textContent.trim(), 'success');
+                });
+            });
+            
+            // Кнопки выбора на карточках
+            document.querySelectorAll('.service-select').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const service = this.getAttribute('data-service');
+                    const serviceValue = service.split('-')[0];
+                    
+                    // Находим соответствующую опцию
+                    serviceOptions.forEach(option => {
+                        option.classList.remove('selected');
+                        if (option.getAttribute('data-value') === serviceValue) {
+                            option.classList.add('selected');
+                            serviceInput.value = serviceValue;
+                        }
+                    });
+                    
+                    // Прокручиваем к форме
+                    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+                    
+                    showNotification('Услуга выбрана', 'success');
+                });
+            });
+            
+            // ===== ФОРМА =====
+            const contactForm = document.getElementById('projectForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    // Валидация
+                    const name = document.getElementById('name').value.trim();
+                    const contact = document.getElementById('contact').value.trim();
+                    const service = document.getElementById('service').value;
+                    const message = document.getElementById('message').value.trim();
+                    
+                    if (!name || !contact || !service || !message) {
+                        showNotification('Пожалуйста, заполните все поля', 'error');
+                        return;
+                    }
+                    
+                    // Показываем загрузку
+                    const submitBtn = contactForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+                    submitBtn.disabled = true;
+                    
+                    try {
+                        // Имитация отправки
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        
+                        // Успешная отправка
+                        showNotification('Ой, что-то пошло не так! напишите мне в Телеграм', 'success');
+                        contactForm.reset();
+                        
+                        // Сбрасываем выбор услуги
+                        serviceOptions.forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        serviceInput.value = '';
+                        
+                    } catch (error) {
+                        console.error('Ошибка отправки:', error);
+                        showNotification('Ошибка отправки. Попробуйте связаться через Telegram.', 'error');
+                    } finally {
+                        // Восстанавливаем кнопку
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                });
+            }
+            
+            // ===== TELEGRAM БОТ =====
+            // ===== УМНЫЙ ИИ-ПОМОЩНИК С ОБРАБОТКОЙ ОШИБОК =====
+const SmartAIAssistant = {
+    // База знаний (200+ фраз с синонимами и опечатками)
+    knowledgeBase: {
+        // Приветствия (с ошибками)
+        'привет': {response: 'Привет! Я Макс-бот 🤖 Чем могу помочь? Могу рассказать о ценах, сроках, технологиях или ответить на любой вопрос!', synonyms: ['здраствуйте', 'драсте', 'хай', 'здарова', 'приветик']},
+        'здравствуйте': {response: 'Здравствуйте! Рад вас видеть! Задавайте вопросы - я помогу со всем разобраться 😊', synonyms: ['здраствуйте', 'добрый день', 'доброе утро', 'добрый вечер']},
+        'хай': {response: 'Хай! 👋 Готов помочь с выбором услуг или консультацией!', synonyms: ['хелоу', 'хаюшки', 'салют', 'прив']},
+        
+        // Как дела (разные варианты)
+        'как дела': {response: 'Отлично! Помогаю клиентам запускать крутые проекты. А у вас как настроение? 😊', synonyms: ['как ты', 'как сам', 'че как', 'как жизнь', 'что нового']},
+        'что делаешь': {response: 'Помогаю людям выбрать подходящие услуги и отвечаю на вопросы о веб-разработке! А вы что ищете?', synonyms: ['че делаешь', 'чем занимаешься', 'работаешь']},
+        
+        // Кто ты
+        'кто ты': {response: 'Я AI-помощник, обученный отвечать на вопросы о веб-разработке и создании ботов! Знаю все о ценах, сроках и технологиях 💡', synonyms: ['ты кто', 'кто такой', 'представься']},
+        
+        // Цены и стоимость (с опечатками)
+        'цена': {response: '💰 <strong>Цены на услуги:</strong><br>• Лендинг: <strong>от 3 000 ₽</strong><br>• Магазин: <strong>от 15 000 ₽</strong><br>• Корпоратив: <strong>от 10 000 ₽</strong><br>• Боты: <strong>от 3 900 ₽</strong><br><br>Точная цена зависит от сложности проекта!', synonyms: ['цены', 'стоимость', 'сколько стоит', 'прайс', 'ценник', 'денег', 'деньги', 'стоит', 'подешевле']},
+        'сколько стоит': {response: '💎 <strong>Примерные цены:</strong><br>🚀 Лендинг: 3 000 - 8 000 ₽<br>🛒 Магазин: 15 000 - 40 000 ₽<br>🏢 Корпоратив: 10 000 - 25 000 ₽<br>🤖 Бот: 3 900 - 15 000 ₽<br><br>Точную стоимость назову после обсуждения проекта!', synonyms: ['скок стоит', 'сколько стоить', 'цена', 'стоимость']},
+        
+        // Сроки (с ошибками)
+        'срок': {response: '⏱️ <strong>Примерные сроки:</strong><br>• Лендинг: <strong>3-7 дней</strong><br>• Магазин: <strong>7-21 день</strong><br>• Корпоратив: <strong>10-30 дней</strong><br>• Бот: <strong>1-7 дней</strong><br><br>Точные сроки назову после ТЗ!', synonyms: ['сроки', 'как быстро', 'когда готово', 'время', 'долго', 'быстро', 'скорость']},
+        'как быстро': {response: '⚡ <strong>Скорость работы:</strong><br>• Лендинг: <strong>3-5 дней</strong> (быстрый старт)<br>• Средний проект: <strong>1-2 недели</strong><br>• Сложный проект: <strong>3-4 недели</strong><br>• Боты: <strong>от 1 дня</strong><br><br>Чем детальнее ТЗ - тем быстрее работаю!', synonyms: ['быстро', 'скоро', 'оперативно', 'долго ждать']},
+        
+        // Процесс работы
+        'процесс': {response: '🔄 <strong>Процесс работы:</strong><br>1. Обсуждение и ТЗ (1-2 дня)<br>2. Дизайн и прототип (3-5 дней)<br>3. Разработка (5-20 дней)<br>4. Тестирование (1-3 дня)<br>5. Запуск и обучение (1 день)<br>6. Поддержка 24/7<br><br>Все прозрачно!', synonyms: ['как работаете', 'этапы', 'порядок работы', 'схема работы']},
+        'начать': {response: '🚀 <strong>Чтобы начать проект:</strong><br>1. Опишите идею в форме ниже<br>2. Я свяжусь с вами в течение 15 минут<br>3. Обсудим детали бесплатно<br>4. Составим ТЗ<br>5. Начнем работу!<br><br>Или пишите сразу в Telegram: @addbold', synonyms: ['старт', 'начаться', 'запуск', 'начать проект']},
+        
+        // Технологии
+        'технологии': {response: '💻 <strong>Мой стек технологий:</strong><br>• Frontend: HTML5, CSS3, JavaScript, React<br>• Backend: Node.js, Python<br>• Боты: Telegraf, Aiogram, GPT API<br>• Базы: PostgreSQL, MongoDB<br>• DevOps: Docker, Nginx<br><br>Использую только современные технологии!', synonyms: ['стек', 'техники', 'инструменты', 'на чем делаете', 'языки']},
+        'сайт на чем': {response: '🌐 <strong>Технологии для сайтов:</strong><br>• Чистый HTML/CSS/JS - для скорости<br>• React/Vue - для сложных интерфейсов<br>• CMS (WordPress) - если нужно администрировать<br>• Все адаптивно и SEO-оптимизировано!', synonyms: ['на чем сайт', 'технологии сайта', 'верстка']},
+        
+        // Оплата
+        'оплата': {response: '💳 <strong>Условия оплаты:</strong><br>• 50% предоплата для старта<br>• 50% после сдачи проекта<br>• Возможна поэтапная оплата для больших проектов<br>• Принимаю: карты, переводы, криптовалюту<br><br>Все официально!', synonyms: ['как оплатить', 'деньги', 'предоплата', 'рассрочка', 'платеж']},
+        
+        // Гарантии
+        'гарантия': {response: '🛡️ <strong>Мои гарантии:</strong><br>• 1 год на весь код<br>• 3 месяца бесплатных правок<br>• Круглосуточная поддержка<br>• Обучение работе с сайтом/ботом<br>• Конфиденциальность 100%<br><br>Работаю на результат!', synonyms: ['гарантии', 'поддержка', 'исправления', 'помощь после']},
+        
+        // Контакты
+        'контакты': {response: '📞 <strong>Контакты Макса:</strong><br>• Telegram: <strong>@addbold</strong> (самый быстрый способ)<br>• Телефон: <strong>8 (906) 407-79-99</strong><br>• Email: <strong>adbold@list.ru</strong><br>• Отвечает в течение 15 минут!<br><br>Пишите - обсудим ваш проект!', synonyms: ['контакт', 'связаться', 'телефон', 'телеграм', 'почта', 'емейл', 'номер']},
+        'телеграм': {response: '✈️ <strong>Telegram Макса:</strong> @addbold<br><br>• Пишите в любое время<br>• Отвечает в течение 15 минут<br>• Можно скидывать файлы и картинки<br>• Самый быстрый способ связи!<br><br>Нажмите на кнопку ниже, чтобы написать 👇', synonyms: ['тг', 'телега', 'telegram']},
+        
+        // Боты
+        'бот': {response: '🤖 <strong>Виды ботов:</strong><br>1. Простой Telegram бот - <strong>3 900 ₽</strong><br>2. Мультимессенджер (Tg+WhatsApp) - <strong>4 500 ₽</strong><br>3. AI бот с NLP - <strong>5 000 ₽</strong><br>4. Бизнес автоматизация - <strong>от 7 500 ₽</strong><br><br>Создам за 1-7 дней!', synonyms: ['боты', 'телеграм бот', 'чат бот', 'автоматизация', 'робот']},
+        'телеграм бот': {response: '💬 <strong>Telegram боты:</strong><br>• Базовый (3 900 ₽) - команды, автоответы<br>• Средний (5 000 ₽) - база данных, API<br>• Продвинутый (8 000 ₽) - платежи, сложная логика<br>• AI бот (от 10 000 ₽) - GPT, машинное обучение<br><br>Расскажу подробнее в Telegram!', synonyms: ['тг бот', 'телеграмм бот', 'бот телеграм']},
+        
+        // Сайты
+        'сайт': {response: '🌐 <strong>Типы сайтов:</strong><br>1. Лендинг (продающая страница) - <strong>от 3 000 ₽</strong><br>2. Интернет-магазин - <strong>от 15 000 ₽</strong><br>3. Корпоративный сайт - <strong>от 10 000 ₽</strong><br>4. Сайт-визитка - <strong>от 5 000 ₽</strong><br>5. Многостраничник - <strong>от 8 000 ₽</strong>', synonyms: ['сайты', 'лендинг', 'интернет магазин', 'корпоратив', 'веб сайт']},
+        'лендинг': {response: '🎯 <strong>Лендинг (продающая страница):</strong><br>• Цена: <strong>3 000 - 8 000 ₽</strong><br>• Срок: <strong>3-7 дней</strong><br>• Включено: дизайн, верстка, формы, SEO<br>• Результат: максимум конверсий!<br><br>Идеально для запуска продукта!', synonyms: ['лендинг пейдж', 'одностраничник', 'посадочная']},
+        'интернет магазин': {response: '🛒 <strong>Интернет-магазин:</strong><br>• Цена: <strong>15 000 - 40 000 ₽</strong><br>• Срок: <strong>7-21 день</strong><br>• Включено: каталог, корзина, оплаты, админка, SEO<br>• Бонус: телеграм-бот в подарок!<br><br>Полный цикл продаж онлайн!', synonyms: ['магазин', 'интернет магаз', 'онлайн магазин', 'е коммерс']},
+        
+        // Портфолио
+        'работы': {response: '🎨 <strong>Примеры работ:</strong><br>• 50+ лендингов для стартапов<br>• 20+ интернет-магазинов<br>• 15+ корпоративных сайтов<br>• 30+ ботов разной сложности<br><br>Примеры вышлю в Telegram по запросу!', synonyms: ['портфолио', 'примеры', 'кейсы', 'проекты', 'что сделал']},
+        
+        // Скидки и акции
+        'скидка': {response: '🎁 <strong>Скидки и акции:</strong><br>• При заказе 2+ услуг - <strong>10% скидка</strong><br>• Постоянным клиентам - <strong>15% скидка</strong><br>• При предоплате за 3 месяца - <strong>20% скидка</strong><br>• Приведи друга - <strong>скидка 15%</strong> вам и другу<br><br>Следите за акциями в Telegram!', synonyms: ['акция', 'дешевле', 'экономия', 'выгода']},
+        
+        // Доработки
+        'доработать': {response: '🔧 <strong>Доработка существующих проектов:</strong><br>• Анализ текущего сайта/бота - <strong>бесплатно</strong><br>• Исправление ошибок - <strong>от 1 000 ₽</strong><br>• Добавление функций - <strong>от 2 000 ₽</strong><br>• Оптимизация скорости - <strong>от 3 000 ₽</strong><br><br>Посмотрю и скажу, что можно улучшить!', synonyms: ['исправить', 'переделать', 'оптимизировать', 'улучшить']},
+        
+        // SEO
+        'сео': {response: '🔍 <strong>SEO оптимизация:</strong><br>• Базовая SEO настройка - <strong>входит в стоимость</strong><br>• Продвинутое SEO - <strong>от 5 000 ₽</strong><br>• Аудит сайта - <strong>от 2 000 ₽</strong><br>• Продвижение в ТОП - <strong>от 10 000 ₽/мес</strong><br><br>Делаю сайты, которые нравятся Google!', synonyms: ['продвижение', 'поиск', 'google', 'яндекс']},
+        
+        // Хостинг
+        'хостинг': {response: '☁️ <strong>Хостинг и домены:</strong><br>• Помогу выбрать хостинг<br>• Помогу купить домен<br>• Настрою SSL сертификат<br>• Перенесу сайт на новый хостинг<br>• Все инструкции предоставлю!<br><br>Или могу разместить у себя (от 500 ₽/мес)', synonyms: ['домен', 'сервер', 'размещение', 'где разместить']},
+        
+        // Обучение
+        'научить': {response: '📚 <strong>Обучение работе:</strong><br>• Подробная инструкция к сайту/боту<br>• Видео-обучение (записываю экран)<br>• Онлайн-консультация (Zoom/Skype)<br>• Техническая поддержка 24/7<br><br>Вы будете уверенно управлять проектом!', synonyms: ['обучение', 'инструкция', 'как пользоваться', 'помощь']},
+        
+        // ИИ и нейросети
+        'ии': {response: '🧠 <strong>AI и нейросети в проектах:</strong><br>• AI чат-боты (GPT, Claude)<br>• Генерация контента нейросетями<br>• Анализ данных машинным обучением<br>• Компьютерное зрение для обработки<br>• Голосовые ассистенты<br><br>Создаю проекты будущего уже сегодня!', synonyms: ['нейросеть', 'чатгпт', 'искуственный интеллект', 'машинное обучение']}
+    },
+    
+    // Общие ответы для непонятных вопросов
+    defaultResponses: [
+        'Хм, интересный вопрос! Давайте я лучше расскажу, что я умею:<br>• Знаю все про <strong>цены и сроки</strong><br>• Расскажу про <strong>технологии</strong><br>• Объясню <strong>процесс работы</strong><br>• Дам <strong>контакты Макса</strong><br><br>Спросите что-то из этого! 😊',
+        'Извините, не совсем понял вопрос. Может быть, вас интересует:<br>💰 <strong>Цены на услуги?</strong><br>⏱️ <strong>Сроки выполнения?</strong><br>🤖 <strong>Создание ботов?</strong><br>🌐 <strong>Разработка сайтов?</strong><br><br>Задайте вопрос проще!',
+        'Отличный вопрос! Но я лучше всего разбираюсь в:<br>• Веб-разработке<br>• Создании ботов<br>• Ценах и сроках<br>• Технологиях<br><br>Спросите что-то об этом!',
+        'Попробуйте задать вопрос по-другому или выберите тему:<br>1. Цены и услуги<br>2. Сроки работы<br>3. Процесс разработки<br>4. Контакты<br>5. Примеры работ',
+        'Кажется, я не совсем понял. Но я точно могу помочь с:<br>🚀 <strong>Запуском сайта/бота</strong><br>💰 <strong>Расчетом стоимости</strong><br>⏱️ <strong>Определением сроков</strong><br>💡 <strong>Консультацией по проекту</strong>'
+    ],
+    
+    // Обработка ошибок и опечаток
+    normalizeText: function(text) {
+        // Приводим к нижнему регистру
+        text = text.toLowerCase();
+        
+        // Убираем лишние пробелы
+        text = text.trim().replace(/\s+/g, ' ');
+        
+        // Исправляем частые опечатки
+        const fixes = {
+            'здраствуйте': 'здравствуйте',
+            'прив': 'привет',
+            'драсте': 'привет',
+            'хаюшки': 'привет',
+            'скок': 'сколько',
+            'стоет': 'стоит',
+            'прайс': 'цена',
+            'ценник': 'цена',
+            'деньги': 'цена',
+            'денег': 'цена',
+            'боты': 'бот',
+            'сайты': 'сайт',
+            'лендинги': 'лендинг',
+            'магазины': 'интернет магазин',
+            'корпоративы': 'корпоратив',
+            'телега': 'телеграм',
+            'тг': 'телеграм',
+            'емейл': 'почта',
+            'имейл': 'почта',
+            'сео': 'seo',
+            'продвижение': 'seo',
+            'хостер': 'хостинг',
+            'сервер': 'хостинг',
+            'нейросеть': 'ии',
+            'чатгпт': 'ии',
+            'гарант': 'гарантия',
+            'поддержка': 'гарантия',
+            'скидки': 'скидка',
+            'акции': 'скидка'
+        };
+        
+        // Применяем исправления
+        for (const [wrong, correct] of Object.entries(fixes)) {
+            if (text.includes(wrong)) {
+                text = text.replace(wrong, correct);
+            }
+        }
+        
+        return text;
+    },
+    
+    // Поиск в базе знаний
+    findAnswer: function(question) {
+        // Нормализуем вопрос
+        question = this.normalizeText(question);
+        
+        // Пытаемся найти точное совпадение
+        for (const [key, data] of Object.entries(this.knowledgeBase)) {
+            if (question.includes(key)) {
+                return data.response;
+            }
+            
+            // Проверяем синонимы
+            if (data.synonyms) {
+                for (const synonym of data.synonyms) {
+                    if (question.includes(synonym)) {
+                        return data.response;
+                    }
+                }
+            }
+        }
+        
+        // Если не нашли - ищем частичные совпадения
+        const words = question.split(' ');
+        for (const word of words) {
+            if (word.length > 3) { // Ищем только слова длиннее 3 букв
+                for (const [key, data] of Object.entries(this.knowledgeBase)) {
+                    if (key.includes(word) || word.includes(key)) {
+                        return data.response;
+                    }
+                }
+            }
+        }
+        
+        // Если ничего не нашли - возвращаем случайный ответ по умолчанию
+        return this.defaultResponses[Math.floor(Math.random() * this.defaultResponses.length)];
+    },
+    
+    // Обработка вопроса
+    processQuestion: function(question) {
+        // Проверяем пустой вопрос
+        if (!question || question.trim().length < 2) {
+            return 'Пожалуйста, задайте вопрос! Я помогу с:<br>💰 ценами<br>⏱️ сроками<br>🤖 ботами<br>🌐 сайтами<br>💡 технологиями';
+        }
+        
+        // Получаем ответ
+        return this.findAnswer(question);
+    }
+};
+
+// ===== ФУНКЦИИ ДЛЯ РАБОТЫ С БОТОМ =====
+
+// Быстрый вопрос
+function quickAsk(topic) {
+    document.getElementById('botInput').value = topic;
+    askSmartBot();
+}
+
+// Переключение истории
+function toggleBotHistory() {
+    const messages = document.getElementById('botMessages');
+    messages.style.display = messages.style.display === 'none' ? 'block' : 'none';
+}
+
+// Основная функция бота
+function askSmartBot() {
+    const input = document.getElementById('botInput');
+    const messages = document.getElementById('botMessages');
+    const question = input.value.trim();
+    
+    // Проверяем пустой вопрос
+    if (!question) {
+        showNotification('Пожалуйста, введите вопрос!', 'error');
+        return;
+    }
+    
+    // Добавляем вопрос пользователя
+    addMessage(question, 'user');
+    
+    // Очищаем поле ввода
+    input.value = '';
+    
+    // Показываем анимацию "бот печатает"
+    const typingIndicator = addMessage('Бот печатает...', 'bot');
+    typingIndicator.style.fontStyle = 'italic';
+    typingIndicator.style.color = 'var(--text-muted)';
+    
+    // Имитируем задержку (бот "думает")
+    setTimeout(() => {
+        // Удаляем индикатор печати
+        typingIndicator.remove();
+        
+        // Получаем ответ от умного бота
+        const answer = SmartAIAssistant.processQuestion(question);
+        
+        // Добавляем ответ
+        addMessage(answer, 'bot');
+        
+        // Показываем быстрые ответы для продолжения диалога
+        showQuickReplies(question);
+        
+    }, Math.random() * 1000 + 800); // Случайная задержка 0.8-1.8 секунд
+}
+
+// Добавление сообщения в чат
+function addMessage(text, sender) {
+    const messages = document.getElementById('botMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'bot-message';
+    
+    if (sender === 'user') {
+        messageDiv.style.background = 'rgba(59, 130, 246, 0.2)';
+        messageDiv.style.border = '1px solid rgba(59, 130, 246, 0.3)';
+        messageDiv.style.textAlign = 'right';
+        messageDiv.style.marginLeft = '20px';
+    }
+    
+    messageDiv.innerHTML = text;
+    messages.appendChild(messageDiv);
+    
+    // Прокручиваем вниз
+    messages.scrollTop = messages.scrollHeight;
+    
+    return messageDiv;
+}
+
+// Показать быстрые ответы
+function showQuickReplies(question) {
+    const quickReplies = document.getElementById('quickReplies');
+    const normalized = SmartAIAssistant.normalizeText(question);
+    
+    // Определяем, какие кнопки показать
+    let buttons = [];
+    
+    if (normalized.includes('цена') || normalized.includes('стоит') || normalized.includes('деньг')) {
+        buttons = ['Сроки', 'Процесс работы', 'Контакты', 'Примеры работ'];
+    } else if (normalized.includes('срок') || normalized.includes('время') || normalized.includes('быстро')) {
+        buttons = ['Цены', 'Процесс работы', 'Гарантии', 'Контакты'];
+    } else if (normalized.includes('бот') || normalized.includes('автомат')) {
+        buttons = ['Цены на ботов', 'Сроки', 'Примеры ботов', 'Контакты'];
+    } else if (normalized.includes('сайт') || normalized.includes('лендинг') || normalized.includes('магазин')) {
+        buttons = ['Цены на сайты', 'Сроки', 'Технологии', 'Контакты'];
+    } else {
+        buttons = ['Цены', 'Сроки', 'Процесс работы', 'Контакты'];
+    }
+    
+    // Обновляем кнопки
+    const container = quickReplies.querySelector('div');
+    container.innerHTML = '';
+    
+    buttons.forEach(btnText => {
+        const button = document.createElement('button');
+        button.className = 'btn btn-sm';
+        button.style.fontSize = '0.8rem';
+        button.textContent = btnText;
+        button.onclick = () => quickAsk(btnText);
+        container.appendChild(button);
+    });
+    
+    // Показываем контейнер
+    quickReplies.style.display = 'block';
+}
+
+// Обработка нажатия Enter
+document.getElementById('botInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        askSmartBot();
+    }
+});
+
+// Автодополнение при вводе
+document.getElementById('botInput').addEventListener('input', function() {
+    const value = this.value.toLowerCase();
+    const quickReplies = document.getElementById('quickReplies');
+    
+    if (value.length > 2) {
+        // Можно добавить подсказки при вводе
+        // Например, подсвечивать кнопки быстрых ответов
+    }
+});
+
+// Инициализация бота при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    // Добавляем приветственное сообщение с подсказками
+    setTimeout(() => {
+        addMessage('💡 <strong>Подсказка:</strong> Задавайте вопросы так, как вам удобно - с ошибками, сленгом или коротко. Я все пойму! 😉', 'bot');
+    }, 2000);
+    
+    // Показываем быстрые кнопки через 3 секунды
+    setTimeout(() => {
+        showQuickReplies('помощь');
+    }, 3000);
+});
+            // ===== КОПИРОВАНИЕ КОНТАКТОВ =====
+            window.copyToClipboard = async function(text) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    showNotification('Скопировано в буфер обмена 📋', 'success');
+                } catch (err) {
+                    showNotification('Не удалось скопировать', 'error');
+                }
+            };
+            
+            // ===== АНИМАЦИИ ПРИ ПРОКРУТКЕ =====
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Обновление активной ссылки при скролле
+            window.addEventListener('scroll', function() {
+                const sections = document.querySelectorAll('section');
+                const navLinks = document.querySelectorAll('.nav-link');
+                
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (window.pageYOffset >= sectionTop - 150) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+        
+        // ===== УВЕДОМЛЕНИЯ =====
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = 'notification';
+            
+            if (type === 'success') {
+                notification.classList.add('success');
+            } else if (type === 'error') {
+                notification.classList.add('error');
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
